@@ -1,0 +1,5 @@
+.container-em-andamento {
+    color: red;
+    border: 1px solid blue;
+    padding: 60px;
+}
