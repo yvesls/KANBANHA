@@ -14,15 +14,22 @@
         <script src="home.js" lang="javascript" defer></script>
     </head>
     <body>
-        <h2>Lista de tarefas ativas</h2>
+        <nav class="nav-bar">
+            <h2 class="logo">KAMBANHA</h2>
+            <div class="menu-items">
+                <span class="btn-tarefas">
+                    <span> Tarefas </span>
+                    <ul class="tarefas-menu">
+                        <li class="btn-ativas">Ativas</li>
+                        <li class="btn-em-andamento">Em andamento</li>
+                        <li class="btn-concluidas">Concluidas</li>
+                    </ul>
+                </span>
+                <span class="btn-cadastrar-membro">Cadastrar Membro</span>
+                <span class="btn-criar-tarefa">Criar Tarefa</span>
+            </div>
+        </nav>
         <div id="container-principal"></div>
         <br />
-        <ul id="statusFilter">
-            <li class="btn-ativas">Ativas</li>
-            <option class="btn-em-andamento">Em andamento</option>
-            <option class="btn-concluidas">Concluidas</option>
-        </ul>
-        <span class="btn-cadastrar-membro">Cadastrar Membro</span>
-        <span class="btn-criar-tarefa">Criar Tarefa</span>
     </body>
 </html>
