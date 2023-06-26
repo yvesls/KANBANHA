@@ -1,3 +1,3 @@
 $(document).ready(function () {
-    console.log("tarefas-ativas");
+    console.log("criar-tarefa");
 });
