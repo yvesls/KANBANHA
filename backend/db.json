@@ -1,1 +1,7 @@
-{}
+{
+    "tarefa": [{ "id": 1, "descricao": "Tarefa 1", "dataCriacao": "20/02/2019 00:02:01", "membroProjeto": "João Silveira", "previsaoConclusao": "20/03/2019 00:00:00", "status": "ATIVA", "dataConclusao": null }],
+    "membroProjeto": [
+        { "id": 1, "nome": "João Silveira", "dataNascimento": "20/02/2000 00:00:00", "cpf": "123.843.382-93" },
+        { "id": 2, "nome": "Salomão Canva", "dataNascimento": "02/05/1987 00:00:00", "cpf": "765.321.455-23" }
+    ]
+}
