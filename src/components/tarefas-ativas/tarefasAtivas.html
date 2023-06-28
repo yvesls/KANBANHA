@@ -1,4 +1,35 @@
 <div class="container-ativas">
-    Tarefas Ativas
-    <!--<span class="btn-criar-tarefa">Criar Tarefa</span>-->
+    <h2>Tarefas Ativas</h2>
+    <table id="activity-table">
+        <thead>
+            <tr>
+                <th>Data da atividade</th>
+                <th>Horário da Criação</th>
+                <th>Nome do profissional</th>
+                <th>Descrição da atividade</th>
+                <th>Tempo previsto</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Linhas da tabela -->
+        </tbody>
+    </table>
+</div>
+
+<div id="dialog-overlay"></div>
+<div id="dialog-box">
+    <form id="forward-form">
+        <label for="forward-profissional">Profissional:</label>
+        <input type="text" id="forward-profissional" readonly />
+
+        <label for="forward-data">Data:</label>
+        <input type="date" id="forward-data" readonly />
+
+        <label for="forward-horario">Hora:</label>
+        <input type="time" id="forward-horario" readonly />
+
+        <button class="enviar-tarefas-ativas" type="button" onclick="sendForward()">Enviar</button>
+    </form>
 </div>
