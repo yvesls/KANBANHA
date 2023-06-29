@@ -5,12 +5,12 @@ $(document).ready(function () {
         sendForward();
     });
 
-    $(".edit-button").click(function (e) {
-        editActivity(e);
+    $(".btn-editar-ativas").click(function (e) {
+        abrirEditarTarefa(e);
     });
 
-    $(".forward-button").click(function (e) {
-        openDialog(e);
+    $(".btn-abrir-encaminhar-tarefa-ativas").click(function (e) {
+        abrirEncaminharTarefa(e);
     });
 
     function sendForward() {
@@ -32,7 +32,7 @@ $(document).ready(function () {
         });
     }
 
-    function editActivity(button) {
+    function abrirEditarTarefa(button) {
         var row = $(button).closest("tr");
         var cells = row.children("td");
 
@@ -51,7 +51,7 @@ $(document).ready(function () {
         row.remove();
     }
 
-    function openDialog(button) {
+    function abrirEncaminharTarefa(button) {
         var row = $(button).closest("tr");
         var cells = row.children("td");
 

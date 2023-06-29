@@ -40,19 +40,3 @@
     border-radius: 4px;
     cursor: pointer;
 }
-
-.activity-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-#activity-table th,
-#activity-table td {
-    border: 1px solid #ccc;
-    padding: 8px;
-    text-align: left;
-}
-
-#activity-table th {
-    background-color: #f2f2f2;
-}

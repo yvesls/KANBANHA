@@ -1,35 +1,36 @@
 <div class="container-ativas">
-    <h2>Tarefas Ativas</h2>
     <table id="activity-table">
+        <h1>Tarefas Ativas</h1>
         <thead>
             <tr>
-                <th>Data da atividade</th>
-                <th>Horário da Criação</th>
-                <th>Nome do profissional</th>
                 <th>Descrição da atividade</th>
-                <th>Tempo previsto</th>
-                <th></th>
-                <th></th>
+                <th>Criado por</th>
+                <th>Data de criação</th>
+                <th>Data de previsão de conclusão</th>
+                <th>Ações</th>
             </tr>
         </thead>
         <tbody>
-            <!-- Linhas da tabela -->
+            <tr>
+                <td>PBI - 0023 Desenvolver módulo de criação de tarefas</td>
+                <td>Manoel Gomes</td>
+                <td>20/03/2023 20:02:04</td>
+                <td>20/04/2023 12:00:00</td>
+                <td>
+                    <div class="td-acoes-ativas"><button class="btn-editar-ativas">Editar</button><button class="btn-abrir-encaminhar-tarefa-ativas">Encaminhar</button></div>
+                </td>
+            </tr>
         </tbody>
     </table>
 </div>
 
-<div id="dialog-overlay"></div>
-<div id="dialog-box">
-    <form id="forward-form">
-        <label for="forward-profissional">Profissional:</label>
-        <input type="text" id="forward-profissional" readonly />
-
-        <label for="forward-data">Data:</label>
-        <input type="date" id="forward-data" readonly />
-
-        <label for="forward-horario">Hora:</label>
-        <input type="time" id="forward-horario" readonly />
-
-        <button class="enviar-tarefas-ativas" type="button" onclick="sendForward()">Enviar</button>
-    </form>
+<div id="dialog-overlay">
+    <div id="dialog-box">
+        <form id="forward-form">
+            <label for="atribuido-a-ativas">Atribuido a:</label>
+            <input type="text" id="atribuido-a-ativas" placeholder="Fulano de tal" />
+            <button class="cancelar-enviar-tarefa-ativas" type="button">Cancelar</button>
+            <button class="enviar-tarefa-ativas" type="button">Enviar</button>
+        </form>
+    </div>
 </div>

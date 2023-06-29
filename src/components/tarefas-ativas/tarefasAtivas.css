@@ -3,16 +3,45 @@
     min-height: 78vh;
 }
 
-.edit-button {
+.td-acoes-ativas {
+    display: flex;
+}
+
+#activity-table {
+    border-collapse: collapse;
+    text-align: center;
+    border-radius: 5px;
+    margin-top: 10px;
+    width: 100%;
+}
+
+#activity-table th,
+#activity-table td {
+    padding: 10px;
+    text-align: left;
+}
+
+#activity-table td {
+    border-bottom: 1px solid #ccc;
+}
+
+#activity-table th {
+    border-left: 1px solid #ccc;
+    background-color: brown;
+    color: white;
+}
+
+.btn-editar-ativas {
     background-color: orange;
     color: #fff;
-    padding: 5px 10px;
+    padding: 5px 28px;
     border: none;
+    margin-right: 5px;
     border-radius: 4px;
     cursor: pointer;
 }
 
-.forward-button {
+.btn-abrir-encaminhar-tarefa-ativas {
     background-color: green;
     color: #fff;
     padding: 5px 10px;
@@ -50,9 +79,7 @@
     margin-bottom: 5px;
 }
 
-#dialog-box input[type="text"],
-#dialog-box input[type="date"],
-#dialog-box input[type="time"] {
+#atribuido-a-ativas {
     width: 100%;
     padding: 8px;
     border: 1px solid #ccc;
@@ -61,11 +88,17 @@
     margin-bottom: 10px;
 }
 
-#dialog-box button {
+.enviar-tarefa-ativas,
+.cancelar-enviar-tarefa-ativas {
     background-color: green;
     color: #fff;
     padding: 5px 10px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    margin-right: 5px;
+}
+
+.cancelar-enviar-tarefa-ativas {
+    background-color: orange;
 }
