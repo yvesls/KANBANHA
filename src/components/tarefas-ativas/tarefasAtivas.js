@@ -1,25 +1,26 @@
 $(document).ready(function () {
-    console.log("tarefas-ativas");
-
-    $(".enviar-tarefas-ativas").click(function () {
-        sendForward();
+    $("#enviar-tarefas-ativas").click(function () {
+        enviarTarefaEmAndamento();
     });
 
-    $(".btn-editar-ativas").click(function (e) {
-        abrirEditarTarefa(e);
+    $("#btn-editar-ativas").click(function () {
+        abrirEditarTarefa();
     });
 
-    $(".btn-abrir-encaminhar-tarefa-ativas").click(function (e) {
+    $("#btn-abrir-encaminhar-tarefa-ativas").click(function (e) {
         abrirEncaminharTarefa(e);
     });
 
-    function sendForward() {
-        var profissional = $("#forward-profissional").val();
-        var data = $("#forward-data").val();
-        var horario = $("#forward-horario").val();
+    $("#cancelar-enviar-tarefa-ativas").click(function () {
+        fecharEncaminarTarefa();
+    });
+    $("#cancelar-editar-tarefa-ativas").click(function () {
+        fecharEditarTarefa();
+    });
 
-        $("#dialog-overlay").fadeOut();
-        $("#dialog-box").fadeOut();
+    function enviarTarefaEmAndamento() {
+        $("#encaminhar-tarefa-ativas").fadeOut();
+        $("#encaminhar-tarefa-container-ativas").fadeOut();
 
         $("#activity-table tbody tr").each(function () {
             var row = $(this);
@@ -32,38 +33,25 @@ $(document).ready(function () {
         });
     }
 
-    function abrirEditarTarefa(button) {
-        var row = $(button).closest("tr");
-        var cells = row.children("td");
-
-        var data = cells.eq(0).text();
-        var horario = cells.eq(1).text();
-        var profissional = cells.eq(2).text();
-        var descricao = cells.eq(3).text();
-        var tempo = cells.eq(4).text();
-
-        $("#data").val(data);
-        $("#horario").val(horario);
-        $("#profissional").val(profissional);
-        $("#descricao").val(descricao);
-        $("#tempo").val(tempo);
-
-        row.remove();
+    function abrirEditarTarefa() {
+        $("#editar-tarefa-ativas").fadeIn();
+        $("#editar-tarefa-container-ativas").fadeIn();
     }
 
     function abrirEncaminharTarefa(button) {
         var row = $(button).closest("tr");
-        var cells = row.children("td");
 
-        var profissional = cells.eq(2).text();
-        var data = cells.eq(0).text();
-        var horario = cells.eq(1).text();
+        $("#encaminhar-tarefa-ativas").fadeIn();
+        $("#encaminhar-tarefa-container-ativas").fadeIn();
+    }
 
-        $("#forward-profissional").val(profissional);
-        $("#forward-data").val(data);
-        $("#forward-horario").val(horario);
+    function fecharEncaminarTarefa() {
+        $("#encaminhar-tarefa-ativas").fadeOut();
+        $("#encaminhar-tarefa-container-ativas").fadeOut();
+    }
 
-        $("#dialog-overlay").fadeIn();
-        $("#dialog-box").fadeIn();
+    function fecharEditarTarefa() {
+        $("#editar-tarefa-ativas").fadeOut();
+        $("#editar-tarefa-container-ativas").fadeOut();
     }
 });

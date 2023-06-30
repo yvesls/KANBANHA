@@ -1,7 +1,7 @@
 $(document).ready(function () {
     console.log("criar-tarefa");
 
-    $(".btn-add").click(function () {
+    $("#btn-adicionar-criar-tarefa").click(function () {
         addActivity();
     });
 
