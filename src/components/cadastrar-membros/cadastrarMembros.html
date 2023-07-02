@@ -1,1 +1,29 @@
-<div class="container-cadastrar-membro">Cadastrar Membro</div>
+<div class="container-cadastrar-membro">
+    <h1>Formulário de Cadastro de Membros</h1>
+
+    <form id="cadastro-form">
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" required>
+
+        <label for="data-nascimento">Data de Nascimento:</label>
+        <input type="date" id="data-nascimento" required>
+
+        <label for="cpf">CPF:</label>
+        <input type="text" id="cpf" required>
+
+        <button type="submit" class="btn-blue">Adicionar</button>
+    </form>
+
+    <table id="membros-tabela">
+        <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Data de Nascimento</th>
+            <th>CPF</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>

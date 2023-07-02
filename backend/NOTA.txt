@@ -1,0 +1,2 @@
+Como dar start no servidor: 
+- Entre dentro desta pasta no terminal e execute o comando: json-server --watch db.json

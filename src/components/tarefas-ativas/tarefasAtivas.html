@@ -1,35 +1,42 @@
 <div class="container-ativas">
-    <h2>Tarefas Ativas</h2>
-    <table id="activity-table">
+    <table id="tb-ativas">
+        <h1 class="h1-tarefas">Tarefas Ativas</h1>
         <thead>
             <tr>
-                <th>Data da atividade</th>
-                <th>Horário da Criação</th>
-                <th>Nome do profissional</th>
                 <th>Descrição da atividade</th>
-                <th>Tempo previsto</th>
-                <th></th>
-                <th></th>
+                <th>Criado por</th>
+                <th>Data de criação</th>
+                <th>Data de previsão de conclusão</th>
+                <th>Ações</th>
             </tr>
         </thead>
-        <tbody>
-            <!-- Linhas da tabela -->
+        <tbody id="tbody-ativas">
         </tbody>
     </table>
 </div>
 
-<div id="dialog-overlay"></div>
-<div id="dialog-box">
-    <form id="forward-form">
-        <label for="forward-profissional">Profissional:</label>
-        <input type="text" id="forward-profissional" readonly />
+<div class="janela-fundo" id="encaminhar-tarefa-ativas">
+    <div class="janela-container" id="encaminhar-tarefa-container-ativas">
+        <form id="forward-form">
+            <label for="atribuido-a-ativas">Atribuido a:</label>
+            <input class="input-formatacao" type="text" id="atribuido-a-ativas" placeholder="Fulano de tal" />
+            <button class="btn-orange" id="cancelar-enviar-tarefa-ativas" type="button">Cancelar</button>
+            <button class="btn-green" id="enviar-tarefa-ativas" type="button">Enviar</button>
+        </form>
+    </div>
+</div>
 
-        <label for="forward-data">Data:</label>
-        <input type="date" id="forward-data" readonly />
+<div class="janela-fundo" id="editar-tarefa-ativas">
+    <div class="janela-container" id="editar-tarefa-container-ativas">
+        <form id="editar-tarefa-form-ativas">
+            <label for="descricao-editar-ativas">Descrição da atividade:</label>
+            <textarea class="input-formatacao" id="descricao-editar-ativas" required></textarea>
 
-        <label for="forward-horario">Hora:</label>
-        <input type="time" id="forward-horario" readonly />
+            <label for="tempo-editar-ativas">Data de previsão de conclusão:</label>
+            <input class="input-formatacao" type="date" id="tempo-editar-ativas" required />
 
-        <button class="enviar-tarefas-ativas" type="button" onclick="sendForward()">Enviar</button>
-    </form>
+            <button class="btn-orange" id="cancelar-editar-tarefa-ativas" type="button">Cancelar</button>
+            <button class="btn-green" id="salvar-editar-tarefa-ativas" type="button">Salvar</button>
+        </form>
+    </div>
 </div>

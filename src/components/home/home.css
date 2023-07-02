@@ -2,12 +2,13 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 #container-principal {
     width: 90%;
     margin: auto;
-    padding: 10px;
+    padding: 0px 10px 10px 10px;
     min-height: 80vh;
     display: flex;
     flex-direction: column;
@@ -69,12 +70,98 @@
 }
 
 .tarefas-menu > li {
-    border: 1px solid rgba(136, 136, 136, 0.205);
+    border: 1px solid #88888834;
     padding: 10px 20px;
     cursor: pointer;
     border-radius: 5px;
 }
 
 .tarefas-menu > li:hover {
-    background-color: rgb(223, 60, 60);
+    background-color: #df3c3c;
+}
+
+.h1-tarefas {
+    padding-bottom: 20px;
+    color: #470303;
+    font-style: italic;
+}
+
+.btn-orange,
+.btn-green {
+    color: #fff;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.btn-orange {
+    background-color: #c53408;
+}
+
+.btn-green {
+    background-color: #008000;
+}
+
+.btn-editar,
+.btn-encaminhar {
+    color: #fff;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-editar {
+    background-color: #f39e00;
+    margin-right: 5px;
+}
+
+.btn-encaminhar {
+    background-color: green;
+}
+
+.input-formatacao {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+.input-formatacao:focus {
+    box-shadow: 0 0 0 0;
+    outline: 0;
+    border: 1px solid rgb(148, 148, 148);
+}
+
+.janela-fundo {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 9999;
+}
+
+.janela-container {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 4px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    z-index: 10000;
+}
+
+.janela-container label {
+    display: block;
+    margin-bottom: 5px;
 }

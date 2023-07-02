@@ -1,69 +1,128 @@
 $(document).ready(function () {
-    console.log("tarefas-ativas");
-
-    $(".enviar-tarefas-ativas").click(function () {
-        sendForward();
-    });
-
-    $(".edit-button").click(function (e) {
-        editActivity(e);
-    });
-
-    $(".forward-button").click(function (e) {
-        openDialog(e);
-    });
-
-    function sendForward() {
-        var profissional = $("#forward-profissional").val();
-        var data = $("#forward-data").val();
-        var horario = $("#forward-horario").val();
-
-        $("#dialog-overlay").fadeOut();
-        $("#dialog-box").fadeOut();
-
-        $("#activity-table tbody tr").each(function () {
-            var row = $(this);
-            var cells = row.children("td");
-
-            if (cells.eq(2).text() === profissional && cells.eq(0).text() === data && cells.eq(1).text() === horario) {
-                row.remove();
-                return false;
-            }
+    let listarTarefasAtivas = ()=> {
+        return new Promise((resolve, reject) => {
+            fetch(`http://localhost:3000/tarefa?status=ATIVA`)
+            .then(response => {
+                if (response.ok) {    
+                    return response.json();
+                } else {
+                    throw new Error('Erro na resposta da requisição!');
+                }
+            })
+            .then(data => {
+                data.forEach(function(tarefa) {
+                    $("#tbody-ativas").append(`
+                <tr>
+                    <td>${tarefa.descricao}</td>
+                    <td>${tarefa.criadoPor}</td>
+                    <td>${tarefa.dataCriacao}</td>
+                    <td>${tarefa.previsaoConclusao}</td>
+                    <td>
+                        <div class="td-acoes-ativas"><button class="btn-editar" id="btn-editar-ativas${tarefa.id}">Editar</button><button class="btn-encaminhar" id="btn-abrir-encaminhar-tarefa-ativas${tarefa.id}">Alocar</button></div>
+                    </td>
+                </tr>
+                `);
+            })
+                resolve(data);
+            })
+            .catch(error => {
+            reject(error);
         });
-    }
+    })}
 
-    function editActivity(button) {
-        var row = $(button).closest("tr");
-        var cells = row.children("td");
+    listarTarefasAtivas().then( listaTarefas =>{
+        $("#enviar-tarefa-ativas").click(function () {
+            enviarTarefaEmAndamento();
+        });
 
-        var data = cells.eq(0).text();
-        var horario = cells.eq(1).text();
-        var profissional = cells.eq(2).text();
-        var descricao = cells.eq(3).text();
-        var tempo = cells.eq(4).text();
+        $("#salvar-editar-tarefa-ativas").click(function () {
+            salvarEditarTarefa();
+        });
 
-        $("#data").val(data);
-        $("#horario").val(horario);
-        $("#profissional").val(profissional);
-        $("#descricao").val(descricao);
-        $("#tempo").val(tempo);
+        listaTarefas.forEach(function(tarefa) {
+            $(`#btn-editar-ativas${tarefa.id}`).click(function () {
+                abrirEditarTarefa(tarefa);
+            });
+        });
 
-        row.remove();
-    }
+        listaTarefas.forEach(function(tarefa) {
+            $(`#btn-abrir-encaminhar-tarefa-ativas${tarefa.id}`).click(function () {
+                abrirEncaminharTarefa(tarefa);
+            });
+        });
 
-    function openDialog(button) {
-        var row = $(button).closest("tr");
-        var cells = row.children("td");
+        $("#cancelar-enviar-tarefa-ativas").click(function () {
+            fecharEncaminarTarefa();
+        });
+        $("#cancelar-editar-tarefa-ativas").click(function () {
+            fecharEditarTarefa();
+        });
 
-        var profissional = cells.eq(2).text();
-        var data = cells.eq(0).text();
-        var horario = cells.eq(1).text();
+        function abrirEncaminharTarefa(tarefa) {
+            $("#encaminhar-tarefa-ativas").fadeIn();
+            $("#encaminhar-tarefa-container-ativas").fadeIn();
+        }
 
-        $("#forward-profissional").val(profissional);
-        $("#forward-data").val(data);
-        $("#forward-horario").val(horario);
+        function enviarTarefaEmAndamento() {
+            $("#encaminhar-tarefa-ativas").fadeOut();
+            $("#encaminhar-tarefa-container-ativas").fadeOut();
+        }
 
-        $("#dialog-overlay").fadeIn();
-        $("#dialog-box").fadeIn();
-    }
+        function fecharEncaminarTarefa() {
+            $("#encaminhar-tarefa-ativas").fadeOut();
+            $("#encaminhar-tarefa-container-ativas").fadeOut();
+        }
+
+        function abrirEditarTarefa(tarefa) {
+            $(`#editar-tarefa-ativas`).fadeIn();
+            $(`#editar-tarefa-container-ativas`).fadeIn();
+            $("#descricao-editar-ativas").val(tarefa.descricao);
+            $("#tempo-editar-ativas").val(converterParaFormatoDate(tarefa.previsaoConclusao.substring(0, 10)));
+        }
+
+        function salvarEditarTarefa() {
+            let descricao = $("#descricao-editar-ativas").val();
+            let dataPrevisao = converterParaFormatoBrasileiro($("#tempo-editar-ativas").val());
+            if(descricao != "" && dataPrevisao != "") {
+                new Promise((resolve, reject) => {
+                    fetch(`http://localhost:3000/tarefa`)
+                    .then(response => {
+                        if (response.ok) {    
+                            return response.json();
+                        } else {
+                            throw new Error('Erro na resposta da requisição!');
+                        }
+                    })
+                    .then(data => {
+                        console.log(data)
+                    })
+                        resolve(data);
+                    })
+                    .catch(error => {
+                    reject(error);
+                });    
+            }
+        }
+
+        function fecharEditarTarefa() {
+            $("#editar-tarefa-ativas").fadeOut();
+            $("#editar-tarefa-container-ativas").fadeOut();
+        }
+
+        function converterParaFormatoDate(data) {
+            const parts = data.split('/');
+            const day = parts[0];
+            const month = parts[1];
+            const year = parts[2];
+            return `${year}-${month}-${day}`;
+        }
+        
+        function converterParaFormatoBrasileiro(data) {
+            const parts = data.split('-');
+            const day = parts[2];
+            const month = parts[1];
+            const year = parts[0];
+            return `${day}/${month}/${year}`;
+        }
+    });
 });

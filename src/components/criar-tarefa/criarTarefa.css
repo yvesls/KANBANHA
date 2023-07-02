@@ -11,27 +11,6 @@
     margin-bottom: 5px;
 }
 
-#activity-form input[type="text"],
-#activity-form input[type="date"],
-#activity-form input[type="time"] {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    margin-bottom: 10px;
-}
-
-#activity-form textarea {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    margin-bottom: 10px;
-    resize: vertical;
-}
-
 .btn-add {
     background-color: blue;
     color: #fff;
@@ -39,20 +18,4 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
-}
-
-.activity-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-#activity-table th,
-#activity-table td {
-    border: 1px solid #ccc;
-    padding: 8px;
-    text-align: left;
-}
-
-#activity-table th {
-    background-color: #f2f2f2;
 }
