@@ -87,7 +87,8 @@
 }
 
 .btn-orange,
-.btn-green {
+.btn-green,
+.btn-red {
     color: #fff;
     padding: 5px 10px;
     border: none;
@@ -97,7 +98,11 @@
 }
 
 .btn-orange {
-    background-color: #c53408;
+    background-color: #e2740d;
+}
+
+.btn-red {
+    background-color: #c52f09;
 }
 
 .btn-green {

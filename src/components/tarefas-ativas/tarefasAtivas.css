@@ -10,13 +10,13 @@
 #tb-ativas {
     border-collapse: collapse;
     text-align: center;
-    border-radius: 5px;
     margin-top: 10px;
     width: 100%;
+    box-shadow: none;
 }
 
 #tb-ativas th,
-#atb-ativas td {
+#tb-ativas td {
     padding: 10px;
     text-align: left;
 }
