@@ -31,8 +31,12 @@ $(document).ready(function () {
     })}
 
     listarTarefasAtivas().then( listaTarefas =>{
-        $("#enviar-tarefas-ativas").click(function () {
+        $("#enviar-tarefa-ativas").click(function () {
             enviarTarefaEmAndamento();
+        });
+
+        $("#salvar-editar-tarefa-ativas").click(function () {
+            salvarEditarTarefa();
         });
 
         listaTarefas.forEach(function(tarefa) {
@@ -54,19 +58,19 @@ $(document).ready(function () {
             fecharEditarTarefa();
         });
 
+        function abrirEncaminharTarefa(tarefa) {
+            $("#encaminhar-tarefa-ativas").fadeIn();
+            $("#encaminhar-tarefa-container-ativas").fadeIn();
+        }
+
         function enviarTarefaEmAndamento() {
             $("#encaminhar-tarefa-ativas").fadeOut();
             $("#encaminhar-tarefa-container-ativas").fadeOut();
+        }
 
-            $("#activity-table tbody tr").each(function () {
-                var row = $(this);
-                var cells = row.children("td");
-
-                if (cells.eq(2).text() === profissional && cells.eq(0).text() === data && cells.eq(1).text() === horario) {
-                    row.remove();
-                    return false;
-                }
-            });
+        function fecharEncaminarTarefa() {
+            $("#encaminhar-tarefa-ativas").fadeOut();
+            $("#encaminhar-tarefa-container-ativas").fadeOut();
         }
 
         function abrirEditarTarefa(tarefa) {
@@ -76,14 +80,28 @@ $(document).ready(function () {
             $("#tempo-editar-ativas").val(converterParaFormatoDate(tarefa.previsaoConclusao.substring(0, 10)));
         }
 
-        function abrirEncaminharTarefa() {
-            $("#encaminhar-tarefa-ativas").fadeIn();
-            $("#encaminhar-tarefa-container-ativas").fadeIn();
-        }
-
-        function fecharEncaminarTarefa() {
-            $("#encaminhar-tarefa-ativas").fadeOut();
-            $("#encaminhar-tarefa-container-ativas").fadeOut();
+        function salvarEditarTarefa() {
+            let descricao = $("#descricao-editar-ativas").val();
+            let dataPrevisao = converterParaFormatoBrasileiro($("#tempo-editar-ativas").val());
+            if(descricao != "" && dataPrevisao != "") {
+                new Promise((resolve, reject) => {
+                    fetch(`http://localhost:3000/tarefa`)
+                    .then(response => {
+                        if (response.ok) {    
+                            return response.json();
+                        } else {
+                            throw new Error('Erro na resposta da requisição!');
+                        }
+                    })
+                    .then(data => {
+                        console.log(data)
+                    })
+                        resolve(data);
+                    })
+                    .catch(error => {
+                    reject(error);
+                });    
+            }
         }
 
         function fecharEditarTarefa() {
