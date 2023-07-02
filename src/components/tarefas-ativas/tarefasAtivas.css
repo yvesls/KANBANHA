@@ -7,7 +7,7 @@
     display: flex;
 }
 
-#activity-table {
+#tb-ativas {
     border-collapse: collapse;
     text-align: center;
     border-radius: 5px;
@@ -15,17 +15,18 @@
     width: 100%;
 }
 
-#activity-table th,
-#activity-table td {
+#tb-ativas th,
+#atb-ativas td {
     padding: 10px;
     text-align: left;
 }
 
-#activity-table td {
+#tb-ativas td {
     border-bottom: 1px solid #ccc;
+    padding: 15px 0;
 }
 
-#activity-table th {
+#tb-ativas th {
     border-left: 1px solid #ccc;
     background-color: brown;
     color: white;

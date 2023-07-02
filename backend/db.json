@@ -1,5 +1,9 @@
 {
-    "tarefa": [{ "id": 1, "descricao": "Tarefa 1", "dataCriacao": "20/02/2019 00:02:01", "criadoPor": "João Silveira", "atribuidoA": "João Silveira", "dataAtribuicao": "20/02/2019 00:05:54", "previsaoConclusao": "20/03/2019 00:00:00", "status": "ATIVA", "dataConclusao": null }],
+    "tarefa": [
+        { "id": 1, "descricao": "Tarefa 1", "dataCriacao": "20/02/2019 00:02:01", "criadoPor": "João Silveira", "atribuidoA": null, "dataAtribuicao": null, "previsaoConclusao": "20/03/2019 00:00:00", "status": "ATIVA", "dataConclusao": null },
+        { "id": 2, "descricao": "Tarefa 2", "dataCriacao": "22/02/2019 00:00:00", "criadoPor": "Jerônimo Monteiro", "atribuidoA": null, "dataAtribuicao": null, "previsaoConclusao": "26/03/2019 00:00:00", "status": "ATIVA", "dataConclusao": null },
+        { "id": 3, "descricao": "Tarefa 0", "dataCriacao": "19/02/2019 00:00:00", "criadoPor": "Jerônimo Monteiro", "atribuidoA": "João Ribeiro", "dataAtribuicao": "21/03/2019 00:00:00", "previsaoConclusao": "23/03/2019 00:00:00", "status": "EM ANDAMENTO", "dataConclusao": null }
+    ],
     "membroProjeto": [
         { "id": 1, "nome": "João Silveira", "dataNascimento": "20/02/2000 00:00:00", "cpf": "123.843.382-93" },
         { "id": 2, "nome": "Salomão Canva", "dataNascimento": "02/05/1987 00:00:00", "cpf": "765.321.455-23" }

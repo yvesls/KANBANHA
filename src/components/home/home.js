@@ -101,12 +101,10 @@ $(document).ready(function () {
     });
 
     $(".btn-tarefas").mouseenter(function () {
-        console.log("entrou");
         $(".tarefas-menu").css("visibility", "visible");
     });
 
     $(".btn-tarefas").mouseleave(function () {
-        console.log("saiu");
         $(".tarefas-menu").css("visibility", "hidden");
     });
 });
