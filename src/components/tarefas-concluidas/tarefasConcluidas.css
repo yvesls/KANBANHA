@@ -1,5 +1,33 @@
 .container-concluidas {
-    color: red;
-    border: 1px solid blue;
     padding: 60px;
+    min-height: 78vh;
+}
+
+.td-acoes-concluidas {
+    display: flex;
+}
+
+#tb-concluidas {
+    border-collapse: collapse;
+    text-align: center;
+    margin-top: 10px;
+    width: 100%;
+    box-shadow: none;
+}
+
+#tb-concluidas th,
+#tb-concluidas td {
+    padding: 10px;
+    text-align: center;
+}
+
+#tb-concluidas td {
+    border-bottom: 1px solid #ccc;
+    padding: 15px 0;
+}
+
+#tb-concluidas th {
+    border-left: 1px solid #ccc;
+    background-color: brown;
+    color: white;
 }

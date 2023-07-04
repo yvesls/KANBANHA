@@ -1,1 +1,39 @@
-<div class="container-em-andamento">Tarefas Em Andamento</div>
+<div class="container-em-andamento">
+    <table id="tb-andamento">
+        <h1 class="h1-tarefas">Tarefas em Andamento</h1>
+        <thead>
+            <tr>
+                <th>Descrição da atividade</th>
+                <th>Criado por</th>
+                <th>Data de criação</th>
+                <th>Atribuido a</th>
+                <th>Data de atribuição</th>
+                <th>Data de previsão de conclusão</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody id="tbody-andamento">
+        </tbody>
+    </table>
+</div>
+
+<div class="janela-fundo" id="editar-tarefa-andamento">
+    <div class="janela-container" id="editar-tarefa-container-andamento">
+        <form id="editar-tarefa-form-andamento">
+            <label for="descricao-editar-andamento">Descrição da atividade:</label>
+            <textarea class="input-formatacao" id="descricao-editar-andamento"></textarea>
+            <label for="atribuido-a-editar-andamento">Atribuido a:</label>
+            <input class="input-formatacao" type="text" id="atribuido-a-editar-andamento" placeholder="Fulano de tal" />
+            <label for="tempo-editar-andamento">Data de previsão de conclusão:</label>
+            <input class="input-formatacao" type="date" id="tempo-editar-andamento" />
+            <input type="hidden" id="id-editar-andamento" value="">
+            <span class="btn-orange" id="cancelar-editar-tarefa-andamento">Cancelar</span>
+            <span class="btn-red" id="remover-tarefa-andamento" type="button">Remover</span>
+            <span class="btn-green" id="salvar-editar-tarefa-andamento">Salvar</span>
+        </form>
+    </div>
+</div>
+
+<div class="janela-container-confirmacao">
+    <span>Salvo com sucesso!</span>
+</div>

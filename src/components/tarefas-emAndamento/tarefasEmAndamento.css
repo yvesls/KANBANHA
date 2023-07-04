@@ -1,5 +1,33 @@
 .container-em-andamento {
-    color: red;
-    border: 1px solid blue;
     padding: 60px;
+    min-height: 78vh;
+}
+
+.td-acoes-andamento {
+    display: flex;
+}
+
+#tb-andamento {
+    border-collapse: collapse;
+    text-align: center;
+    margin-top: 10px;
+    width: 100%;
+    box-shadow: none;
+}
+
+#tb-andamento th,
+#tb-andamento td {
+    padding: 10px;
+    text-align: center;
+}
+
+#tb-andamento td {
+    border-bottom: 1px solid #ccc;
+    padding: 15px 0;
+}
+
+#tb-andamento th {
+    border-left: 1px solid #ccc;
+    background-color: brown;
+    color: white;
 }
