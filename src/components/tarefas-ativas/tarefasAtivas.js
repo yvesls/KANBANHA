@@ -24,8 +24,8 @@ $(document).ready( function () {
                             <tr>
                                 <td>${tarefa.descricao}</td>
                                 <td>${tarefa.criadoPor}</td>
-                                <td>${tarefa.dataCriacao}</td>
-                                <td>${tarefa.previsaoConclusao}</td>
+                                <td>${converterParaFormatoBrasileiro(tarefa.dataCriacao)}</td>
+                                <td>${converterParaFormatoBrasileiro(tarefa.previsaoConclusao)}</td>
                                 <td>
                                     <div class="td-acoes-ativas"><button class="btn-editar" id="btn-editar-ativas${tarefa.id}"><i class="fa-solid fa-pen-to-square"></i></button><button class="btn-encaminhar" id="btn-abrir-encaminhar-tarefa-ativas${tarefa.id}"><i class="fa-solid fa-arrow-right"></i></button></div>
                                 </td>
@@ -44,6 +44,37 @@ $(document).ready( function () {
         })
     }
     listarTarefasAtivas();
+
+    let todasTarefas;
+    function listarTarefas() {
+        todasTarefas = [];
+        $(".carregando").show();
+        new Promise((resolve, reject) => {
+            fetch(`http://localhost:3000/tarefa`)
+            .then(response => {
+                if (response.ok) {    
+                    return response.json();
+                } else {
+                    $(".carregando").hide();
+                    exibirJanelaErro("Erro na resposta da requisição. Servidor possivelmente não está ativo.");
+                    throw new Error('Erro na resposta da requisição!');
+                }
+            })
+            .then(data => {
+                todasTarefas = data;
+                // inadequado retornar todas as tarefas para usar só o tamanho, porém, o json-server possui retornos limitados
+                updateProgressBar(listaTarefas.length, todasTarefas.length);
+                $("#quantidade-ativas").html(listaTarefas.length);
+                $("#quantidade-total-ativas").html(todasTarefas.length);
+                $(".carregando").hide();
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
+        })
+    }
+    listarTarefas();
 
     var listaMembros;
     function listarMembros() {
@@ -135,8 +166,8 @@ $(document).ready( function () {
 
     function salvarEditarTarefa() {
         let descricaoGet = $("#descricao-editar-ativas").val();
-        console.log(descricaoGet)
-        let dataPrevisaoGet = converterParaFormatoBrasileiro($("#tempo-editar-ativas").val());
+        let dataPrevisaoGet = $("#data-previsao-editar-ativas").val() + " " + $("#tempo-previsao-editar-ativas").val();
+        console.log(dataPrevisaoGet)
         $(".carregando").show();
         if(descricaoGet != "" && dataPrevisaoGet != "") {
             let id = $("#id-editar-ativas").val();
@@ -246,7 +277,8 @@ $(document).ready( function () {
         $("#editar-tarefa-container-ativas").fadeIn();
         $("#id-editar-ativas").val(tarefa.id);
         $("#descricao-editar-ativas").val(tarefa.descricao);
-        $("#tempo-editar-ativas").val(converterParaFormatoDate(tarefa.previsaoConclusao.substring(0, 10)));
+        $("#data-previsao-editar-ativas").val(tarefa.previsaoConclusao.substring(0, 10));
+        $("#tempo-previsao-editar-ativas").val(tarefa.previsaoConclusao.substring(11, 16));
     }
 
     function fecharEditarTarefa() {
@@ -269,21 +301,15 @@ $(document).ready( function () {
             $(".janela-container-erro").fadeOut();
         }, 2000);
     }
-
-    function converterParaFormatoDate(data) {
-        const parts = data.split('/');
-        const day = parts[0];
-        const month = parts[1];
-        const year = parts[2];
-        return `${year}-${month}-${day}`;
-    }
     
     function converterParaFormatoBrasileiro(data) {
+        let hora = data.substring(11, 16);
+        data = data.substring(0, 10);
         const parts = data.split('-');
         const day = parts[2];
         const month = parts[1];
         const year = parts[0];
-        return `${day}/${month}/${year}`;
+        return `${day}/${month}/${year} ${hora}`;
     }
 
     function obterDataAtual() {
@@ -296,6 +322,12 @@ $(document).ready( function () {
         const minutos = String(data.getMinutes()).padStart(2, '0');
       
         return `${ano}-${mes}-${dia} ${horas}:${minutos}`;
+    }
+
+    function updateProgressBar(totalAtivas, totalTarefas) {
+        var progressBar = document.getElementById("barra-progresso-ativas");
+        let progress = (totalAtivas / totalTarefas) * 100;
+        progressBar.style.width = progress + "%";
     }
 });
 

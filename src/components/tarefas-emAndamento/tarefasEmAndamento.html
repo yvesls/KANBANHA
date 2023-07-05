@@ -26,12 +26,22 @@
             <select class="input-formatacao" id="atribuido-a-editar-andamento">
                 <option value=""></option>
             </select>
-            <label for="tempo-editar-andamento">Data de previsão de conclusão:</label>
-            <input class="input-formatacao" type="date" id="tempo-editar-andamento" />
+            <label for="data-previsao-editar-andamento">Previsão de conclusão (data):</label>
+            <input type="date" class="input-formatacao" id="data-previsao-editar-andamento" />
+            <label for="tempo-previsao-editar-andamento">Previsão de conclusão (hora):</label>
+            <input class="input-formatacao" type="time" id="tempo-previsao-editar-andamento" />
             <input type="hidden" id="id-editar-andamento" value="">
             <span class="btn-orange" id="cancelar-editar-tarefa-andamento">Cancelar</span>
             <span class="btn-red" id="remover-tarefa-andamento" type="button">Remover</span>
             <span class="btn-green" id="salvar-editar-tarefa-andamento">Salvar</span>
         </form>
     </div>
+</div>
+
+<div class="fundo-barra">
+    <div class="barra">
+        <div class="barra-progresso" id="barra-progresso-em-andamento"></div>
+    </div>
+    <div class="quantidade">Quantidade em andamento: <b id="quantidade-em-andamento"></b></div>
+    <div class="quantidade">Quantidade total de tarefas: <b id="quantidade-total-em-andamento"></b></div>
 </div>

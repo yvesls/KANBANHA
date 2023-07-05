@@ -1,49 +1,110 @@
 $(document).ready(function () {
-    console.log("criar-tarefa");
+    var listaMembros;
+    function listarMembros() {
+        listaMembros = [];
+        $("#tbody-membros").html("");
+        $(".carregando").show();
+        new Promise((resolve, reject) => {
+            fetch(`http://localhost:3000/membroProjeto`)
+            .then(response => {
+                if (response.ok) {    
+                    return response.json();
+                } else {
+                    $(".carregando").hide();
+                    exibirJanelaErro("Erro na resposta da requisição. Servidor possivelmente não está ativo.");
+                    throw new Error('Erro na resposta da requisição!');
+                }
+            })
+            .then(data => {
+                listaMembros = data;
+                listaMembros.forEach((membro)=> {
+                    $("#profissional-criar-tarefa").append(`<option value="${membro.nome}">${membro.nome}</option>`);
+                })
+                $(".carregando").hide();
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
+        })
+    }
+    listarMembros();
 
-    $("#btn-adicionar-criar-tarefa").click(function () {
-        addActivity();
-    });
+    function criarTarefa() {
+        let criadoPorC = $("#profissional-criar-tarefa").val();
+        let descricaoC = $("#descricao-criar-tarefa").val();
+        let previsaoConclusaoC = $("#data-previsao-criar-tarefa").val() + " " + $("#tempo-previsao-criar-tarefa").val();
+        let tarefa = {
+            descricao: descricaoC,
+            dataCriacao: obterDataAtual(),
+            criadoPor: criadoPorC,
+            atribuidoA: undefined,
+            dataAtribuicao: undefined,
+            previsaoConclusao: previsaoConclusaoC,
+            status: "ATIVA",
+            dataConclusao: undefined
+          }
 
-    function addActivity() {
-        var data = $("#data").val();
-        var horario = $("#horario").val();
-        var profissional = $("#profissional").val();
-        var descricao = $("#descricao").val();
-        var tempo = $("#tempo").val();
-
-        if (data && horario && profissional && descricao && tempo) {
-            var newRow = $("<tr>");
-            var cell1 = $("<td>").text(data);
-            var cell2 = $("<td>").text(horario);
-            var cell3 = $("<td>").text(profissional);
-            var cell4 = $("<td>").text(descricao);
-            var cell5 = $("<td>").text(tempo);
-            var cell6 = $("<td>").html('<button class="edit-button" onclick="editActivity(this)">Editar</button>');
-            var cell7 = $("<td>").html('<button class="forward-button" onclick="openDialog(this)">Encaminhar</button>');
-
-            newRow.append(cell1, cell2, cell3, cell4, cell5, cell6, cell7);
-            $("#activity-table tbody").append(newRow);
-
-            // Limpar os campos do formulário
-            $("#data").val("");
-            $("#horario").val("");
-            $("#profissional").val("");
-            $("#descricao").val("");
-            $("#tempo").val("");
+        if(criadoPorC != "" && descricaoC != "" && $("#data-previsao-criar-tarefa").val() != "" && $("#tempo-previsao-criar-tarefa").val() != "") {
+            new Promise((resolve, reject) => {
+                fetch(`http://localhost:3000/tarefa`, {
+                    method: 'POST',
+                    body: JSON.stringify(tarefa),
+                    headers: {
+                    'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {    
+                        return response.json();
+                    } else {
+                        $(".carregando").hide();
+                        exibirJanelaErro("Erro na resposta da requisição. Servidor possivelmente não está ativo.");
+                        throw new Error('Erro na resposta da requisição!');
+                    }
+                })
+                .then(data => {
+                    console.log(data);
+                    exibirJanelaSucesso("Adicionado com sucesso!");
+                    listarMembros();
+                    resolve(data);
+                })
+                .catch(error => {
+                    reject(error);
+                });  
+            });
         }
     }
 
-    /* exemplo
-    $.ajax({
-        url: "http://localhost:3000/pessoas",
-        type: "GET",
-        dataType: "json",
-        success: function (data) {
-            console.log(data); // Aqui você pode manipular os dados recebidos
-        },
-        error: function (error) {
-            console.log("Ocorreu um erro:", error);
-        },
-    });*/
+    $("#btn-adicionar-criar-tarefa").click( () => {
+        criarTarefa();
+    });
+
+    function exibirJanelaSucesso(mensagem){
+        $(".janela-container-confirmacao > span").html(mensagem);
+        $(".janela-container-confirmacao").fadeIn();
+        setTimeout(() => {
+            $(".janela-container-confirmacao").fadeOut();
+        }, 2000);
+    }
+
+    function exibirJanelaErro(mensagem){
+        $(".janela-container-erro > span").html(mensagem);
+        $(".janela-container-erro").fadeIn();
+        setTimeout(() => {
+            $(".janela-container-erro").fadeOut();
+        }, 2000);
+    }
+
+    function obterDataAtual() {
+        const data = new Date();
+      
+        const ano = data.getFullYear();
+        const mes = String(data.getMonth() + 1).padStart(2, '0');
+        const dia = String(data.getDate()).padStart(2, '0');
+        const horas = String(data.getHours()).padStart(2, '0');
+        const minutos = String(data.getMinutes()).padStart(2, '0');
+      
+        return `${ano}-${mes}-${dia} ${horas}:${minutos}`;
+    }
 });

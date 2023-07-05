@@ -1,20 +1,19 @@
 <div class="container-criar-tarefa">
     <form id="activity-form">
         <h1 class="h1-tarefas">Criar Tarefa</h1>
-        <label for="data-criar-tarefa">Data da atividade:</label>
-        <input type="date" class="input-formatacao" id="data-criar-tarefa" required />
+        <label for="profissional-criar-tarefa">Criado por:</label>
+        <select class="input-formatacao" id="profissional-criar-tarefa">
+            <option value=""></option>
+        </select>
 
-        <label for="horario-criar-tarefa">Horário da Criação:</label>
-        <input type="time" class="input-formatacao" id="horario-criar-tarefa" required />
+        <label for="descricao-criar-tarefa">Descrição:</label>
+        <input type="text" class="input-formatacao" id="descricao-criar-tarefa" />
 
-        <label for="profissional-criar-tarefa">Nome do profissional:</label>
-        <input type="text" class="input-formatacao" id="profissional-criar-tarefa" required />
+        <label for="data-previsao-criar-tarefa">Previsão de conclusão (data):</label>
+        <input type="date" class="input-formatacao" id="data-previsao-criar-tarefa" />
 
-        <label for="descricao-criar-tarefa">Descrição da atividade:</label>
-        <textarea class="input-formatacao" id="descricao-criar-tarefa" required></textarea>
-
-        <label for="tempo-criar-tarefa">Tempo previsto:</label>
-        <input type="date" class="input-formatacao" id="tempo-criar-tarefa" required />
+        <label for="tempo-previsao-criar-tarefa">Previsão de conclusão (hora):</label>
+        <input type="time" class="input-formatacao" id="tempo-previsao-criar-tarefa" />
 
         <button type="button" class="btn-green" id="btn-adicionar-criar-tarefa">Adicionar</button>
     </form>

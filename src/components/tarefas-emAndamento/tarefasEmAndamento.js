@@ -24,10 +24,10 @@ $(document).ready( function () {
                             <tr>
                                 <td>${tarefa.descricao}</td>
                                 <td>${tarefa.criadoPor}</td>
-                                <td>${tarefa.dataCriacao}</td>
+                                <td>${converterParaFormatoBrasileiro(tarefa.dataCriacao)}</td>
                                 <td>${tarefa.atribuidoA}</td>
-                                <td>${tarefa.dataAtribuicao}</td>
-                                <td>${tarefa.previsaoConclusao}</td>
+                                <td>${converterParaFormatoBrasileiro(tarefa.dataAtribuicao)}</td>
+                                <td>${converterParaFormatoBrasileiro(tarefa.previsaoConclusao)}</td>
                                 <td>
                                     <div class="td-acoes-andamento"><button class="btn-editar" id="btn-editar-andamento${tarefa.id}"><i class="fa-solid fa-pen-to-square"></i></button><button class="btn-encaminhar" id="btn-abrir-encaminhar-tarefa-andamento${tarefa.id}"><i class="fa-solid fa-check"></i></button></div>
                                 </td>
@@ -46,6 +46,37 @@ $(document).ready( function () {
         })
     }
     listarTarefasAndamento();
+
+    let todasTarefas;
+    function listarTarefas() {
+        todasTarefas = [];
+        $(".carregando").show();
+        new Promise((resolve, reject) => {
+            fetch(`http://localhost:3000/tarefa`)
+            .then(response => {
+                if (response.ok) {    
+                    return response.json();
+                } else {
+                    $(".carregando").hide();
+                    exibirJanelaErro("Erro na resposta da requisição. Servidor possivelmente não está ativo.");
+                    throw new Error('Erro na resposta da requisição!');
+                }
+            })
+            .then(data => {
+                todasTarefas = data;
+                // inadequado retornar todas as tarefas para usar só o tamanho, porém, o json-server possui retornos limitados
+                updateProgressBar(listaTarefas.length, todasTarefas.length);
+                $("#quantidade-em-andamento").html(listaTarefas.length);
+                $("#quantidade-total-em-andamento").html(todasTarefas.length);
+                $(".carregando").hide();
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
+        })
+    }
+    listarTarefas();
 
     var listaMembros;
     function listarMembros() {
@@ -133,8 +164,8 @@ $(document).ready( function () {
     function salvarEditarTarefa() {
         let descricaoGet = $("#descricao-editar-andamento").val();
         let atribuidoAGet = $("#atribuido-a-editar-andamento").val();
-        let dataPrevisaoGet = converterParaFormatoBrasileiro($("#tempo-editar-andamento").val());
-        if(descricaoGet != "" && dataPrevisaoGet != "" && atribuidoAGet != "") {
+        let dataPrevisaoGet = $("#data-previsao-editar-andamento").val() + " " + $("#tempo-previsao-editar-andamento").val();
+        if(descricaoGet != "" && $("#data-previsao-editar-andamento").val() != "" && $("#tempo-previsao-editar-andamento").val() != "" && atribuidoAGet != "") {
             let id = $("#id-editar-andamento").val();
             let tarefa = listaTarefas.find(tarefa => tarefa.id == id);
             tarefa.descricao = descricaoGet;
@@ -234,7 +265,8 @@ $(document).ready( function () {
         $("#id-editar-andamento").val(tarefa.id);
         $("#descricao-editar-andamento").val(tarefa.descricao);
         $("#atribuido-a-editar-andamento").val(tarefa.atribuidoA);
-        $("#tempo-editar-andamento").val(converterParaFormatoDate(tarefa.previsaoConclusao.substring(0, 10)));
+        $("#data-previsao-editar-andamento").val(tarefa.previsaoConclusao.substring(0, 10));
+        $("#tempo-previsao-editar-andamento").val(tarefa.previsaoConclusao.substring(11, 16));
     }
 
     function fecharEditarTarefa() {
@@ -250,20 +282,14 @@ $(document).ready( function () {
         }, 2000);
     }
 
-    function converterParaFormatoDate(data) {
-        const parts = data.split('/');
-        const day = parts[0];
-        const month = parts[1];
-        const year = parts[2];
-        return `${year}-${month}-${day}`;
-    }
-
     function converterParaFormatoBrasileiro(data) {
+        let hora = data.substring(11, 16);
+        data = data.substring(0, 10);
         const parts = data.split('-');
         const day = parts[2];
         const month = parts[1];
         const year = parts[0];
-        return `${day}/${month}/${year}`;
+        return `${day}/${month}/${year} ${hora}`;
     }
 
     function obterDataAtual() {
@@ -284,6 +310,12 @@ $(document).ready( function () {
         setTimeout(() => {
             $(".janela-container-erro").fadeOut();
         }, 2000);
+    }
+
+    function updateProgressBar(totalAtivas, totalTarefas) {
+        var progressBar = document.getElementById("barra-progresso-em-andamento");
+        let progress = (totalAtivas / totalTarefas) * 100;
+        progressBar.style.width = progress + "%";
     }
 });
 

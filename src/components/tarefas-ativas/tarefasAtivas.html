@@ -3,7 +3,7 @@
         <h1 class="h1-tarefas">Tarefas Ativas</h1>
         <thead>
             <tr>
-                <th>Descrição da atividade</th>
+                <th>Descrição</th>
                 <th>Criado por</th>
                 <th>Data de criação</th>
                 <th>Data de previsão de conclusão</th>
@@ -34,8 +34,10 @@
         <form id="editar-tarefa-form-ativas">
             <label for="descricao-editar-ativas">Descrição da atividade:</label>
             <textarea class="input-formatacao" id="descricao-editar-ativas"></textarea>
-            <label for="tempo-editar-ativas">Data de previsão de conclusão:</label>
-            <input class="input-formatacao" type="date" id="tempo-editar-ativas" />
+            <label for="data-previsao-editar-ativas">Previsão de conclusão (data):</label>
+            <input type="date" class="input-formatacao" id="data-previsao-editar-ativas" />
+            <label for="tempo-previsao-editar-ativas">Previsão de conclusão (hora):</label>
+            <input class="input-formatacao" type="time" id="tempo-previsao-editar-ativas" />
             <input type="hidden" id="id-editar-ativas" value="">
             <span class="btn-orange" id="cancelar-editar-tarefa-ativas">Cancelar</span>
             <span class="btn-red" id="remover-tarefa-ativas" type="button">Remover</span>
@@ -44,4 +46,10 @@
     </div>
 </div>
 
-    
+<div class="fundo-barra">
+    <div class="barra">
+        <div class="barra-progresso" id="barra-progresso-ativas"></div>
+    </div>
+    <div class="quantidade">Quantidade ativas: <b id="quantidade-ativas"></b></div>
+    <div class="quantidade">Quantidade total de tarefas: <b id="quantidade-total-ativas"></b></div>
+</div>

@@ -31,3 +31,11 @@
     background-color: brown;
     color: white;
 }
+
+.em-tempo {
+    color: green;
+}
+
+.atrasado {
+    color: red;
+}
