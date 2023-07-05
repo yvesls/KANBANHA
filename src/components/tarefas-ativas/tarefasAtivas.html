@@ -19,10 +19,12 @@
     <div class="janela-container" id="encaminhar-tarefa-container-ativas">
         <form id="forward-form">
             <label for="atribuido-a-ativas">Atribuido a:</label>
-            <input class="input-formatacao" type="text" id="atribuido-a-ativas" placeholder="Fulano de tal" />
+            <select class="input-formatacao" id="atribuido-a-ativas">
+                <option value=""></option>
+            </select>
             <input type="hidden" id="id-encaminhar-ativas" value="">
             <span class="btn-orange" id="cancelar-enviar-tarefa-ativas">Cancelar</span>
-            <span class="btn-green" id="enviar-tarefa-ativas" type="button">Enviar</span>
+            <span class="btn-green" id="enviar-tarefa-ativas" type="button">Alocar</span>
         </form>
     </div>
 </div>
@@ -32,7 +34,6 @@
         <form id="editar-tarefa-form-ativas">
             <label for="descricao-editar-ativas">Descrição da atividade:</label>
             <textarea class="input-formatacao" id="descricao-editar-ativas"></textarea>
-
             <label for="tempo-editar-ativas">Data de previsão de conclusão:</label>
             <input class="input-formatacao" type="date" id="tempo-editar-ativas" />
             <input type="hidden" id="id-editar-ativas" value="">
@@ -43,7 +44,4 @@
     </div>
 </div>
 
-<div class="janela-container-confirmacao">
-    <span>Salvo com sucesso!</span>
-</div>
     

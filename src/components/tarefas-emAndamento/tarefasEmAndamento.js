@@ -3,12 +3,15 @@ $(document).ready( function () {
     function listarTarefasAndamento() {
         listaTarefas = [];
         $("#tbody-andamento").html("");
+        $(".carregando").show();
         new Promise((resolve, reject) => {
             fetch(`http://localhost:3000/tarefa?status=EM ANDAMENTO`)
             .then(response => {
                 if (response.ok) {    
                     return response.json();
                 } else {
+                    $(".carregando").hide();
+                    exibirJanelaErro("Erro na resposta da requisição. Servidor possivelmente não está ativo.");
                     throw new Error('Erro na resposta da requisição!');
                 }
             })
@@ -26,7 +29,7 @@ $(document).ready( function () {
                                 <td>${tarefa.dataAtribuicao}</td>
                                 <td>${tarefa.previsaoConclusao}</td>
                                 <td>
-                                    <div class="td-acoes-andamento"><button class="btn-editar" id="btn-editar-andamento${tarefa.id}">Editar</button><button class="btn-encaminhar" id="btn-abrir-encaminhar-tarefa-andamento${tarefa.id}">Concluir</button></div>
+                                    <div class="td-acoes-andamento"><button class="btn-editar" id="btn-editar-andamento${tarefa.id}"><i class="fa-solid fa-pen-to-square"></i></button><button class="btn-encaminhar" id="btn-abrir-encaminhar-tarefa-andamento${tarefa.id}"><i class="fa-solid fa-check"></i></button></div>
                                 </td>
                             </tr>
                         `);
@@ -34,6 +37,7 @@ $(document).ready( function () {
                 }
                 listaTarefas = data;
                 carregarConfComponente( );
+                $(".carregando").hide();
                 resolve(data);
             })
             .catch(error => {
@@ -42,6 +46,37 @@ $(document).ready( function () {
         })
     }
     listarTarefasAndamento();
+
+    var listaMembros;
+    function listarMembros() {
+        listaMembros = [];
+        $("#tbody-membros").html("");
+        $(".carregando").show();
+        new Promise((resolve, reject) => {
+            fetch(`http://localhost:3000/membroProjeto`)
+            .then(response => {
+                if (response.ok) {    
+                    return response.json();
+                } else {
+                    $(".carregando").hide();
+                    exibirJanelaErro("Erro na resposta da requisição. Servidor possivelmente não está ativo.");
+                    throw new Error('Erro na resposta da requisição!');
+                }
+            })
+            .then(data => {
+                listaMembros = data;
+                listaMembros.forEach((membro)=> {
+                    $("#atribuido-a-editar-andamento").append(`<option value="${membro.nome}">${membro.nome}</option>`);
+                })
+                $(".carregando").hide();
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
+        })
+    }
+    listarMembros();
     
     function carregarConfComponente() {
         console.log(listaTarefas);
@@ -62,6 +97,7 @@ $(document).ready( function () {
         let tarefa = listaTarefas.find(tarefa => tarefa.id == id);
         tarefa.status = "CONCLUIDA";
         tarefa.dataConclusao = obterDataAtual();
+        $(".carregando").show();
         let salvar = () => { 
             return new Promise((resolve, reject) => {
             fetch(`http://localhost:3000/tarefa/${tarefa.id}`, {
@@ -75,12 +111,15 @@ $(document).ready( function () {
                 if (response.ok) {    
                     return response.json();
                 } else {
+                    $(".carregando").hide();
+                    exibirJanelaErro("Erro na resposta da requisição. Servidor possivelmente não está ativo.");
                     throw new Error('Erro na resposta da requisição!');
                 }
             })
             .then(data => {
                 resolve(data);
                 exibirJanelaSucesso("Alocado com sucesso!");
+                $(".carregando").hide();
             })
             .catch(error => {
                 reject(error);
@@ -102,6 +141,7 @@ $(document).ready( function () {
             tarefa.previsaoConclusao = dataPrevisaoGet;
             tarefa.atribuidoA = atribuidoAGet;
             console.log(tarefa)
+            $(".carregando").show();
             let salvar = () => { 
                 return new Promise((resolve, reject) => {
                 fetch(`http://localhost:3000/tarefa/${parseInt(tarefa.id)}`, {
@@ -116,13 +156,13 @@ $(document).ready( function () {
                         resolve();
                         exibirJanelaSucesso("Editado com sucesso!");
                         fecharEditarTarefa();
+                        $(".carregando").hide();
                         return response.json();
                     } else {
+                        $(".carregando").hide();
+                        exibirJanelaErro("Erro na resposta da requisição. Servidor possivelmente não está ativo.");
                         throw new Error('Erro na resposta da requisição!');
                     }
-                })
-                .then(_ => {
-                    
                 })
                 .catch(error => {
                     reject(error);
@@ -135,6 +175,7 @@ $(document).ready( function () {
 
     function removerTarefa() {
         let id = $("#id-editar-andamento").val();
+        $(".carregando").show();
         let remover = () => { 
             return new Promise((resolve, reject) => {
             fetch(`http://localhost:3000/tarefa/${parseInt(id)}`, {
@@ -144,6 +185,8 @@ $(document).ready( function () {
                 if (response.ok) {    
                     return response.json();
                 } else {
+                    $(".carregando").hide();
+                    exibirJanelaErro("Erro na resposta da requisição. Servidor possivelmente não está ativo.");
                     throw new Error('Erro na resposta da requisição!');
                 }
             })
@@ -151,6 +194,7 @@ $(document).ready( function () {
                 resolve(data);
                 exibirJanelaSucesso("Removido com sucesso!");
                 fecharEditarTarefa();
+                $(".carregando").hide();
             })
             .catch(error => {
                 reject(error);
@@ -232,6 +276,14 @@ $(document).ready( function () {
         const minutos = String(data.getMinutes()).padStart(2, '0');
       
         return `${ano}-${mes}-${dia} ${horas}:${minutos}`;
+    }
+
+    function exibirJanelaErro(mensagem){
+        $(".janela-container-erro > span").html(mensagem);
+        $(".janela-container-erro").fadeIn();
+        setTimeout(() => {
+            $(".janela-container-erro").fadeOut();
+        }, 2000);
     }
 });
 

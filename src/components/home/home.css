@@ -109,6 +109,11 @@
     background-color: #008000;
 }
 
+.btn-blue {
+    background-color: blue;
+    margin-top: 10px;
+}
+
 .btn-editar,
 .btn-encaminhar {
     color: #fff;
@@ -153,7 +158,7 @@
     z-index: 9999;
 }
 
-.janela-container, .janela-container-confirmacao {
+.janela-container, .janela-container-confirmacao, .janela-container-erro {
     display: none;
     position: fixed;
     transform: translate(-50%, -50%);
@@ -169,11 +174,18 @@
     background-color: #fff;
 }
 
-.janela-container-confirmacao {
+.janela-container-confirmacao, .janela-container-erro {
     top: 26%;
     left: 85%;
     color: white;
+}
+
+.janela-container-confirmacao {
     background-color: #008000;
+}
+
+.janela-container-erro {
+    background-color: #e62200;
 }
 
 .janela-container label {

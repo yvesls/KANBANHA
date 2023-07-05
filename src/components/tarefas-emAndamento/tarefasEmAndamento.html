@@ -23,7 +23,9 @@
             <label for="descricao-editar-andamento">Descrição da atividade:</label>
             <textarea class="input-formatacao" id="descricao-editar-andamento"></textarea>
             <label for="atribuido-a-editar-andamento">Atribuido a:</label>
-            <input class="input-formatacao" type="text" id="atribuido-a-editar-andamento" placeholder="Fulano de tal" />
+            <select class="input-formatacao" id="atribuido-a-editar-andamento">
+                <option value=""></option>
+            </select>
             <label for="tempo-editar-andamento">Data de previsão de conclusão:</label>
             <input class="input-formatacao" type="date" id="tempo-editar-andamento" />
             <input type="hidden" id="id-editar-andamento" value="">
@@ -32,8 +34,4 @@
             <span class="btn-green" id="salvar-editar-tarefa-andamento">Salvar</span>
         </form>
     </div>
-</div>
-
-<div class="janela-container-confirmacao">
-    <span>Salvo com sucesso!</span>
 </div>

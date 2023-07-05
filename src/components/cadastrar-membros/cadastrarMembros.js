@@ -1,60 +1,222 @@
 $(document).ready(function () {
-    $('#cadastro-form').submit(function(event) {
-        event.preventDefault();
+    var listaMembros;
+    function listarMembros() {
+        listaMembros = [];
+        $("#tbody-membros").html("");
+        $(".carregando").show();
+        new Promise((resolve, reject) => {
+            fetch(`http://localhost:3000/membroProjeto`)
+            .then(response => {
+                if (response.ok) {    
+                    return response.json();
+                } else {
+                    $(".carregando").hide();
+                    exibirJanelaErro("Erro na resposta da requisição. Servidor possivelmente não está ativo.");
+                    throw new Error('Erro na resposta da requisição!');
+                }
+            })
+            .then(data => {
+                if(data.length == 0) {
+                    $("#tbody-membros").append(`<tr><td colspan="5"><b>Não há membros registrados.</b></td></tr>`);
+                }else {
+                    data.forEach(function(membros) {
+                        $("#tbody-membros").append(`
+                        <tr>
+                            <td>${membros.nome}</td>
+                            <td>${membros.dataNascimento}</td>
+                            <td>${membros.cpf}</td>
+                            <td>${membros.cargo}</td>
+                            <td>
+                                <div class="td-membros"><button class="btn-editar" id="btn-editar-ativas${membros.id}"><i class="fa-solid fa-pen-to-square"></i></button>
+                            </td>
+                        </tr>
+                        `);
+                    });
+                }
+                listaMembros = data;
+                carregarConfComponente( );
+                $(".carregando").hide();
+                resolve(data);
+            })
+            .catch(error => {
+                reject(error);
+            });
+        })
+    }
+    listarMembros();
 
-        // Obtém os valores dos campos do formulário
-        var nome = $('#nome').val();
-        var dataNascimento = $('#data-nascimento').val();
-        var cpf = $('#cpf').val();
+    function carregarConfComponente() {
+        listaMembros.forEach(function(membros) {
+            $(`#btn-editar-ativas${membros.id}`).click(function () {
+                abrirEditarMembro(membros);
+            });
+        });
+    }
+    
+    $("#salvar-membros").click(function () {
+        salvarMembros();
+    });
 
-        // Verifica se está no modo de edição ou adição
-        var isEdit = $('#cadastro-form').data('isEdit');
-        var rowIndex = $('#cadastro-form').data('rowIndex');
-
-        if (isEdit) {
-            // Modo de edição - atualiza a linha existente
-            var row = $('#membros-tabela tbody tr').eq(rowIndex);
-            row.find('td:eq(0)').text(nome);
-            row.find('td:eq(1)').text(dataNascimento);
-            row.find('td:eq(2)').text(cpf);
-
-            // Reseta as flags
-            $('#cadastro-form').data('isEdit', false);
-            $('#cadastro-form').data('rowIndex', null);
-        } else {
-            // Modo de adição - adiciona uma nova linha à tabela com os dados do formulário
-            var newRow = $('<tr>');
-            newRow.append('<td>' + nome + '</td>');
-            newRow.append('<td>' + dataNascimento + '</td>');
-            newRow.append('<td>' + cpf + '</td>');
-            newRow.append('<td><button class="editar-btn">Editar</button></td>');
-            $('#membros-tabela tbody').append(newRow);
+    function salvarMembros() {
+        let nomeC = $("#nome-membro").val();
+        let dataNascimentoC = converterParaFormatoBrasileiro($("#data-nascimento").val());
+        let cpfC = $("#cpf").val();
+        let cargoC = $("#cargo").val();
+        let membro = {
+            nome: nomeC,
+            dataNascimento : dataNascimentoC, 
+            cpf: cpfC,
+            cargo : cargoC
         }
 
-        // Limpa os campos do formulário
-        $('#nome').val('');
-        $('#data-nascimento').val('');
-        $('#cpf').val('');
+        if(nomeC != "" && dataNascimentoC != "" && cpfC != "" && cargoC != "") {
+            new Promise((resolve, reject) => {
+                fetch(`http://localhost:3000/membroProjeto`, {
+                    method: 'POST',
+                    body: JSON.stringify(membro),
+                    headers: {
+                    'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {    
+                        return response.json();
+                    } else {
+                        $(".carregando").hide();
+                        exibirJanelaErro("Erro na resposta da requisição. Servidor possivelmente não está ativo.");
+                        throw new Error('Erro na resposta da requisição!');
+                    }
+                })
+                .then(data => {
+                    console.log(data);
+                    exibirJanelaSucesso("Adicionado com sucesso!");
+                    listarMembros();
+                    resolve(data);
+                })
+                .catch(error => {
+                    reject(error);
+                });  
+            });
+        }
+    }
+
+    function salvarEditarMembro() {
+        let nomeC = $("#nome-membro-editar").val();
+        let cargoC = $("#cargo-editar").val();
+        $(".carregando").show();
+        if(nomeC != "" && cargoC != "") {
+            let id = $("#id-editar").val();
+            let membro = listaMembros.find(membro => membro.id == id);
+            membro.nome = nomeC;
+            membro.cargo = cargoC;
+            let salvar = () => { 
+                return new Promise((resolve, reject) => {
+                fetch(`http://localhost:3000/membroProjeto/${parseInt(membro.id)}`, {
+                    method: 'PUT',
+                    body: JSON.stringify(membro),
+                    headers: {
+                    'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {    
+                        resolve();
+                        exibirJanelaSucesso("Editado com sucesso!");
+                        $(".carregando").hide();
+                        fecharEditarMembro();
+                        return response.json();
+                    } else {
+                        $(".carregando").hide();
+                        exibirJanelaErro("Erro na resposta da requisição. Servidor possivelmente não está ativo.");
+                        throw new Error('Erro na resposta da requisição!');
+                    }
+                })
+                .catch(error => {
+                    reject(error);
+                });  
+            })}   
+            salvar();
+            listarMembros();
+        }
+    }
+
+    function removerMembro() {
+        let id = $("#id-editar").val();
+        $(".carregando").show();
+        let remover = () => { 
+            return new Promise((resolve, reject) => {
+            fetch(`http://localhost:3000/membroProjeto/${parseInt(id)}`, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (response.ok) {    
+                    return response.json();
+                } else {
+                    $(".carregando").hide();
+                    exibirJanelaErro("Erro na resposta da requisição. Servidor possivelmente não está ativo.");
+                    throw new Error('Erro na resposta da requisição!');
+                }
+            })
+            .then(data => {
+                resolve(data);
+                exibirJanelaSucesso("Removido com sucesso!");
+                $(".carregando").hide();
+                fecharEditarMembro();
+            })
+            .catch(error => {
+                reject(error);
+            });  
+        })}   
+        remover();
+        listarMembros();
+    }
+
+    function abrirEditarMembro(membro) {
+        $("#editar-membro").fadeIn();
+        $("#editar-membro-container").fadeIn();
+        $("#id-editar").val(membro.id);
+        $("#nome-membro-editar").val(membro.nome);
+        $("#cargo-editar").val(membro.cargo);
+    }
+
+    $("#salvar-editar-membro").click( () => {
+        salvarEditarMembro();
     });
 
-    // Define o evento de clique para o botão "Editar"
-    $(document).on('click', '.editar-btn', function() {
-        var row = $(this).closest('tr');
-        var nome = row.find('td:eq(0)').text();
-        var dataNascimento = row.find('td:eq(1)').text();
-        var cpf = row.find('td:eq(2)').text();
-
-        // Preenche o formulário com as informações da linha selecionada
-        $('#nome').val(nome);
-        $('#data-nascimento').val(dataNascimento);
-        $('#cpf').val(cpf);
-
-        // Define as flags de modo de edição e índice da linha
-        var rowIndex = row.index();
-        $('#cadastro-form').data('isEdit', true);
-        $('#cadastro-form').data('rowIndex', rowIndex);
+    $("#remover-membro").click(function () {
+        removerMembro();
     });
 
-    // Aplica a máscara ao campo CPF
-    $('#cpf').inputmask('999.999.999-99');
+    $("#cancelar-editar-membro").click(function () {
+        fecharEditarMembro();
+    });
+
+    function fecharEditarMembro() {
+        $("#editar-membro").fadeOut();
+        $("#editar-membro-container").fadeOut();
+    }
+
+    function exibirJanelaSucesso(mensagem){
+        $(".janela-container-confirmacao > span").html(mensagem);
+        $(".janela-container-confirmacao").fadeIn();
+        setTimeout(() => {
+            $(".janela-container-confirmacao").fadeOut();
+        }, 2000);
+    }
+
+    function exibirJanelaErro(mensagem){
+        $(".janela-container-erro > span").html(mensagem);
+        $(".janela-container-erro").fadeIn();
+        setTimeout(() => {
+            $(".janela-container-erro").fadeOut();
+        }, 2000);
+    }
+
+    function converterParaFormatoBrasileiro(data) {
+        const parts = data.split('-');
+        const day = parts[2];
+        const month = parts[1];
+        const year = parts[0];
+        return `${day}/${month}/${year}`;
+    }
 });
