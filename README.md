@@ -4,6 +4,10 @@ TEMA - KANBANHA (TEMA 3)
 
 Integrantes: Lukian e Yves.
 
+Necessário:
+- Node
+- npm
+
 Esclarecimentos: 
 - O trabalho é divido em 2 projetos. O KANBANHA, responsável pelo frontend e toda a lógica do projeto;
 e o KANBANHA-BACKEND, que é uma API simples em json-server (uma biblioteca do node.js).
@@ -13,5 +17,6 @@ Logo, para o funcionamento correto do código, é necessário abrir apenas a pas
 
 Instruções: 
 - Abra o terminal na pasta do KANBANHA-BACKEND e rode o seguinte comando: 
+    npm install -g json-server
     json-server --watch db.json
 - Abra o arquivo src/componets/home/home.html no vscode com o live-server
