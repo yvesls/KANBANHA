@@ -23,7 +23,7 @@ $(document).ready(function () {
                         $("#tbody-membros").append(`
                         <tr>
                             <td>${membros.nome}</td>
-                            <td>${membros.dataNascimento}</td>
+                            <td>${converterParaFormatoBrasileiro(membros.dataNascimento)}</td>
                             <td>${membros.cpf}</td>
                             <td>${membros.cargo}</td>
                             <td>
@@ -58,18 +58,17 @@ $(document).ready(function () {
     });
 
     function salvarMembros() {
-        let nomeC = $("#nome-membro").val();
-        let dataNascimentoC = converterParaFormatoBrasileiro($("#data-nascimento").val());
-        let cpfC = $("#cpf").val();
-        let cargoC = $("#cargo").val();
-        let membro = {
-            nome: nomeC,
-            dataNascimento : dataNascimentoC, 
-            cpf: cpfC,
-            cargo : cargoC
-        }
-
-        if(nomeC != "" && dataNascimentoC != "" && cpfC != "" && cargoC != "") {
+        if($("#nome-membro").val() != "" && $("#data-nascimento").val() != "" && $("#cpf").val() != "" && $("#cargo").val() != "") {
+            let nomeC = $("#nome-membro").val();
+            let dataNascimentoC = $("#data-nascimento").val();
+            let cpfC = $("#cpf").val();
+            let cargoC = $("#cargo").val();
+            let membro = {
+                nome: nomeC,
+                dataNascimento : dataNascimentoC, 
+                cpf: cpfC,
+                cargo : cargoC
+            }
             new Promise((resolve, reject) => {
                 fetch(`http://localhost:3000/membroProjeto`, {
                     method: 'POST',
@@ -88,7 +87,6 @@ $(document).ready(function () {
                     }
                 })
                 .then(data => {
-                    console.log(data);
                     exibirJanelaSucesso("Adicionado com sucesso!");
                     listarMembros();
                     resolve(data);
@@ -97,6 +95,8 @@ $(document).ready(function () {
                     reject(error);
                 });  
             });
+        }else {
+            exibirJanelaErro("Há campos vazios!");
         }
     }
 

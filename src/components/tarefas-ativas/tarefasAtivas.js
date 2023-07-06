@@ -80,6 +80,7 @@ $(document).ready( function () {
     function listarMembros() {
         listaMembros = [];
         $("#tbody-membros").html("");
+        $("#atribuido-a-ativas").html("");
         $(".carregando").show();
         new Promise((resolve, reject) => {
             fetch(`http://localhost:3000/membroProjeto`)
@@ -108,7 +109,6 @@ $(document).ready( function () {
     listarMembros();
 
     function carregarConfComponente() {
-        console.log(listaTarefas);
         listaTarefas.forEach(function(tarefa) {
             $(`#btn-editar-ativas${tarefa.id}`).click(function () {
                 abrirEditarTarefa(tarefa);
@@ -123,59 +123,61 @@ $(document).ready( function () {
     }
 
     function enviarTarefaEmAndamento() {
-        let atribuidoAGet = $("#atribuido-a-ativas").val();
-        let dataAtribuicaoGet = obterDataAtual();
-        let id = $("#id-encaminhar-ativas").val();
-        let tarefa = listaTarefas.find(tarefa => tarefa.id == id);
-        tarefa.atribuidoA = atribuidoAGet;
-        tarefa.dataAtribuicao = dataAtribuicaoGet;
-        tarefa.status = "EM ANDAMENTO";
-        $(".carregando").show();
-        let salvar = () => { 
-            return new Promise((resolve, reject) => {
-            fetch(`http://localhost:3000/tarefa/${tarefa.id}`, {
-                method: 'PUT',
-                body: JSON.stringify(tarefa),
-                headers: {
-                'Content-Type': 'application/json'
-                }
-            })
-            .then(response => {
-                if (response.ok) {    
-                    return response.json();
-                } else {
+        if($("#atribuido-a-ativas").val() != "") {
+            let atribuidoAGet = $("#atribuido-a-ativas").val();
+            let dataAtribuicaoGet = obterDataAtual();
+            let id = $("#id-encaminhar-ativas").val();
+            let tarefa = listaTarefas.find(tarefa => tarefa.id == id);
+            tarefa.atribuidoA = atribuidoAGet;
+            tarefa.dataAtribuicao = dataAtribuicaoGet;
+            tarefa.status = "EM ANDAMENTO";
+            $(".carregando").show();
+            let salvar = () => { 
+                return new Promise((resolve, reject) => {
+                fetch(`http://localhost:3000/tarefa/${tarefa.id}`, {
+                    method: 'PUT',
+                    body: JSON.stringify(tarefa),
+                    headers: {
+                    'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {    
+                        return response.json();
+                    } else {
+                        $(".carregando").hide();
+                        exibirJanelaErro("Erro na resposta da requisição. Servidor possivelmente não está ativo.");
+                        throw new Error('Erro na resposta da requisição!');
+                    }
+                })
+                .then(data => {
+                    resolve(data);
+                    exibirJanelaSucesso("Alocado com sucesso!");
                     $(".carregando").hide();
-                    exibirJanelaErro("Erro na resposta da requisição. Servidor possivelmente não está ativo.");
-                    throw new Error('Erro na resposta da requisição!');
-                }
-            })
-            .then(data => {
-                resolve(data);
-                exibirJanelaSucesso("Alocado com sucesso!");
-                $(".carregando").hide();
-                fecharEncaminarTarefa();
-            })
-            .catch(error => {
-                reject(error);
-            });  
-        })}   
-        salvar();
-        listarTarefasAtivas();    
-            
+                    fecharEncaminarTarefa();
+                })
+                .catch(error => {
+                    reject(error);
+                });  
+            })}   
+            salvar();
+            listarTarefasAtivas();    
+            listarTarefas();
+        }else {
+            exibirJanelaErro("Há campos vazios!");
+        }
     }
 
     function salvarEditarTarefa() {
-        let descricaoGet = $("#descricao-editar-ativas").val();
-        let dataPrevisaoGet = $("#data-previsao-editar-ativas").val() + " " + $("#tempo-previsao-editar-ativas").val();
-        console.log(dataPrevisaoGet)
-        $(".carregando").show();
-        if(descricaoGet != "" && dataPrevisaoGet != "") {
+        if($("#descricao-editar-ativas").val() != "" && $("#data-previsao-editar-ativas").val() != "" && $("#tempo-previsao-editar-ativas").val() != "") {
+            let descricaoGet = $("#descricao-editar-ativas").val();
+            let dataPrevisaoGet = $("#data-previsao-editar-ativas").val() + " " + $("#tempo-previsao-editar-ativas").val();
+            $(".carregando").show();
             let id = $("#id-editar-ativas").val();
             let tarefa = listaTarefas.find(tarefa => tarefa.id == id);
             $(tarefa.descricao).val(descricaoGet);
             tarefa.previsaoConclusao = dataPrevisaoGet;
             tarefa.descricao = descricaoGet;
-            console.log(tarefa)
             let salvar = () => { 
                 return new Promise((resolve, reject) => {
                 fetch(`http://localhost:3000/tarefa/${parseInt(tarefa.id)}`, {
@@ -207,6 +209,9 @@ $(document).ready( function () {
             })}   
             salvar();
             listarTarefasAtivas();
+            listarTarefas();
+        }else {
+            exibirJanelaErro("Há campos vazios!");
         }
     }
 
@@ -239,6 +244,7 @@ $(document).ready( function () {
         })}   
         remover();
         listarTarefasAtivas();
+        listarTarefas();
     }
 
     $("#enviar-tarefa-ativas").click(function () {

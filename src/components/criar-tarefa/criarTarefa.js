@@ -4,6 +4,7 @@ $(document).ready(function () {
         listaMembros = [];
         $("#tbody-membros").html("");
         $(".carregando").show();
+        $("#profissional-criar-tarefa").html("");
         new Promise((resolve, reject) => {
             fetch(`http://localhost:3000/membroProjeto`)
             .then(response => {
@@ -64,7 +65,6 @@ $(document).ready(function () {
                     }
                 })
                 .then(data => {
-                    console.log(data);
                     exibirJanelaSucesso("Adicionado com sucesso!");
                     listarMembros();
                     resolve(data);

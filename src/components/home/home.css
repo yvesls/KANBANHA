@@ -222,7 +222,7 @@
     width: 90%;
 }
 
-.fundo-barra div {
+.fundo-barras > div {
     margin-left: 20px;
 }
 

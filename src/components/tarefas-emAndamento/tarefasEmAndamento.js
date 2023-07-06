@@ -82,6 +82,7 @@ $(document).ready( function () {
     function listarMembros() {
         listaMembros = [];
         $("#tbody-membros").html("");
+        $("#atribuido-a-editar-andamento").html("");
         $(".carregando").show();
         new Promise((resolve, reject) => {
             fetch(`http://localhost:3000/membroProjeto`)
@@ -110,7 +111,6 @@ $(document).ready( function () {
     listarMembros();
     
     function carregarConfComponente() {
-        console.log(listaTarefas);
         listaTarefas.forEach(function(tarefa) {
             $(`#btn-editar-andamento${tarefa.id}`).click(function () {
                 abrirEditarTarefa(tarefa);
@@ -158,20 +158,20 @@ $(document).ready( function () {
         })}   
         salvar();
         listarTarefasAndamento();    
-            
     }
 
     function salvarEditarTarefa() {
-        let descricaoGet = $("#descricao-editar-andamento").val();
-        let atribuidoAGet = $("#atribuido-a-editar-andamento").val();
-        let dataPrevisaoGet = $("#data-previsao-editar-andamento").val() + " " + $("#tempo-previsao-editar-andamento").val();
-        if(descricaoGet != "" && $("#data-previsao-editar-andamento").val() != "" && $("#tempo-previsao-editar-andamento").val() != "" && atribuidoAGet != "") {
+        if($("#descricao-editar-andamento").val() != "" && $("#data-previsao-editar-andamento").val() != "" && $("#tempo-previsao-editar-andamento").val() != "" && $("#atribuido-a-editar-andamento").val() != "") {
+            let descricaoGet = $("#descricao-editar-andamento").val();
+            let atribuidoAGet = $("#atribuido-a-editar-andamento").val();
+            let dataPrevisaoGet = $("#data-previsao-editar-andamento").val() + " " + $("#tempo-previsao-editar-andamento").val();
+            
             let id = $("#id-editar-andamento").val();
             let tarefa = listaTarefas.find(tarefa => tarefa.id == id);
+
             tarefa.descricao = descricaoGet;
             tarefa.previsaoConclusao = dataPrevisaoGet;
             tarefa.atribuidoA = atribuidoAGet;
-            console.log(tarefa)
             $(".carregando").show();
             let salvar = () => { 
                 return new Promise((resolve, reject) => {
@@ -201,6 +201,8 @@ $(document).ready( function () {
             })}   
             salvar();
             listarTarefasAndamento();
+        }else {
+            exibirJanelaErro("Há campos vazios!");
         }
     }
 

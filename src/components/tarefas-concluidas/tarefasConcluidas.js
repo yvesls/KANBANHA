@@ -1,5 +1,7 @@
 $(document).ready(function () {
     var listaTarefas;
+    var resultado = 0;
+    var concAtrasadas = 0;
     function listarTarefasConcluidas() {
         listaTarefas = [];
         $("#tbody-concluidas").html("");
@@ -19,12 +21,12 @@ $(document).ready(function () {
                 if(data.length == 0) {
                     $("#tbody-concluidas").append(`<tr><td colspan="7"><b>Não há tarefas concluidas.</b></td></tr>`);
                 }else {
-                    let resultado = 0;
                     data.forEach(function(tarefa) {
                         const situacaoEntrega = compararDatas(converterParaFormatoBrasileiro(tarefa.previsaoConclusao), converterParaFormatoBrasileiro(tarefa.dataConclusao));
                         let situacao = `<td class="${situacaoEntrega.status}">Entregue dentro do tempo</td>`;
                         let tempo = `<td class="${situacaoEntrega.status}">Dias: ${situacaoEntrega.tempoAtraso.dias} Horas: ${situacaoEntrega.tempoAtraso.horas}</td>`;
                         if(situacaoEntrega.atraso) {
+                            concAtrasadas++;
                             resultado = somarTempoAtraso(resultado, situacaoEntrega);
                             situacao = `<td class="${situacaoEntrega.status}">Entregue com atraso</td>`;
                         }
@@ -75,6 +77,9 @@ $(document).ready(function () {
                 updateProgressBar(listaTarefas.length, todasTarefas.length);
                 $("#quantidade-concluidas").html(listaTarefas.length);
                 $("#quantidade-total-concluidas").html(todasTarefas.length);
+                updateProgressBarAtrasada(concAtrasadas, listaTarefas.length);
+                $("#quantidade-concluidas-atrasadas").html(concAtrasadas);
+                $("#quantidade-total-concluidas-atrasadas").html(resultado);
                 $(".carregando").hide();
                 resolve(data);
             })
@@ -111,7 +116,6 @@ $(document).ready(function () {
         const date2 = new Date(ano2, mes2 - 1, dia2, hora2, minuto2);
     
         const diffInMilliseconds = date1 - date2;
-        console.log(diffInMilliseconds)
         if (diffInMilliseconds < 0) {
             return {
                 atraso: true,
@@ -140,12 +144,9 @@ $(document).ready(function () {
     function somarTempoAtraso(resultado, tempoAtrasoParametro) {
             const { dias, horas } = tempoAtrasoParametro.tempoAtraso;
         
-            const totalAtrasoCalculado = dias + (horas / 24);
-            const totalAtrasoFinal = resultado + totalAtrasoCalculado;
-            var milissegundosPorDia = 24 * 60 * 60 * totalAtrasoFinal;
-            console.log(milissegundosPorDia);
-            console.log(totalAtrasoFinal.toFixed(2))
-            return  totalAtrasoFinal.toFixed(2);
+            let totalAtrasoCalculado = dias + (horas / 24);
+            let totalAtrasoFinal = resultado + totalAtrasoCalculado;
+            return  totalAtrasoFinal;
     }
 
     function updateProgressBar(totalAtivas, totalTarefas) {
@@ -154,7 +155,7 @@ $(document).ready(function () {
         progressBar.style.width = progress + "%";
     }
     
-    function updateProgressBar(totalAtivas, totalTarefas) {
+    function updateProgressBarAtrasada(totalAtivas, totalTarefas) {
         var progressBar = document.getElementById("barra-progresso-concluidas-atrasadas");
         let progress = (totalAtivas / totalTarefas) * 100;
         progressBar.style.width = progress + "%";
