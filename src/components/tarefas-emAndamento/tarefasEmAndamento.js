@@ -157,7 +157,8 @@ $(document).ready( function () {
             });  
         })}   
         salvar();
-        listarTarefasAndamento();    
+        listarTarefasAndamento();  
+        listarTarefas();
     }
 
     function salvarEditarTarefa() {
@@ -201,6 +202,7 @@ $(document).ready( function () {
             })}   
             salvar();
             listarTarefasAndamento();
+            listarTarefas();
         }else {
             exibirJanelaErro("Há campos vazios!");
         }
@@ -235,6 +237,7 @@ $(document).ready( function () {
         })}   
         remover();
         listarTarefasAndamento();
+        listarTarefas();
     }
 
     $("#enviar-tarefa-andamento").click(function () {

@@ -101,10 +101,10 @@ $(document).ready(function () {
     }
 
     function salvarEditarMembro() {
-        let nomeC = $("#nome-membro-editar").val();
-        let cargoC = $("#cargo-editar").val();
-        $(".carregando").show();
-        if(nomeC != "" && cargoC != "") {
+        if($("#nome-membro-editar").val() != "" && $("#cargo-editar").val() != "") {
+            let nomeC = $("#nome-membro-editar").val();
+            let cargoC = $("#cargo-editar").val();
+            $(".carregando").show();
             let id = $("#id-editar").val();
             let membro = listaMembros.find(membro => membro.id == id);
             membro.nome = nomeC;
@@ -137,6 +137,8 @@ $(document).ready(function () {
             })}   
             salvar();
             listarMembros();
+        }else {
+            exibirJanelaErro("Há campos vazios!");
         }
     }
 

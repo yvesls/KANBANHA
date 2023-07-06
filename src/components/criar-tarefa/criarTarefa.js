@@ -32,21 +32,20 @@ $(document).ready(function () {
     listarMembros();
 
     function criarTarefa() {
-        let criadoPorC = $("#profissional-criar-tarefa").val();
-        let descricaoC = $("#descricao-criar-tarefa").val();
-        let previsaoConclusaoC = $("#data-previsao-criar-tarefa").val() + " " + $("#tempo-previsao-criar-tarefa").val();
-        let tarefa = {
-            descricao: descricaoC,
-            dataCriacao: obterDataAtual(),
-            criadoPor: criadoPorC,
-            atribuidoA: undefined,
-            dataAtribuicao: undefined,
-            previsaoConclusao: previsaoConclusaoC,
-            status: "ATIVA",
-            dataConclusao: undefined
-          }
-
-        if(criadoPorC != "" && descricaoC != "" && $("#data-previsao-criar-tarefa").val() != "" && $("#tempo-previsao-criar-tarefa").val() != "") {
+        if($("#profissional-criar-tarefa").val() != "" && $("#descricao-criar-tarefa").val() != "" && $("#data-previsao-criar-tarefa").val() != "" && $("#tempo-previsao-criar-tarefa").val() != "") {
+            let criadoPorC = $("#profissional-criar-tarefa").val();
+            let descricaoC = $("#descricao-criar-tarefa").val();
+            let previsaoConclusaoC = $("#data-previsao-criar-tarefa").val() + " " + $("#tempo-previsao-criar-tarefa").val();
+            let tarefa = {
+                descricao: descricaoC,
+                dataCriacao: obterDataAtual(),
+                criadoPor: criadoPorC,
+                atribuidoA: undefined,
+                dataAtribuicao: undefined,
+                previsaoConclusao: previsaoConclusaoC,
+                status: "ATIVA",
+                dataConclusao: undefined
+            }
             new Promise((resolve, reject) => {
                 fetch(`http://localhost:3000/tarefa`, {
                     method: 'POST',
@@ -73,6 +72,8 @@ $(document).ready(function () {
                     reject(error);
                 });  
             });
+        }else {
+            exibirJanelaErro("Há campos vazios!");
         }
     }
 
