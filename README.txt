@@ -1,5 +1,3 @@
-# KANBANHA
-
 TEMA - KANBANHA (TEMA 3)
 
 Integrantes: Lukian e Yves.
